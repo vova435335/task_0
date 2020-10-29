@@ -7,7 +7,7 @@ public class Percent {
     }
 
     double totalAmount(double sum, int percent) {
-        return sum - percentageOfAmount(sum, percent);
+        return sum + percentageOfAmount(sum, percent);
     }
 
     int roundedTotalAmount(double sum, int percent) {

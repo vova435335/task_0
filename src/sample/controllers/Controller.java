@@ -1,7 +1,6 @@
 package sample.controllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,42 +8,62 @@ import javafx.scene.control.TextField;
 
 public class Controller {
 
-    @FXML
-    private ResourceBundle resources;
+    private Percent percent = new Percent();
 
-    @FXML
-    private URL location;
+    private double sum;
 
     @FXML
     private TextField amount_tf;
-
     @FXML
     private Button calculate_small_tip_btn;
-
     @FXML
     private Label result_small_tip_label;
-
     @FXML
     private Button calculate_usual_tip_btn;
-
     @FXML
     private Label result_usual_tip_label;
-
     @FXML
     private Button calculate_big_tip_btn;
-
     @FXML
     private Label result_big_tip_label;
+    @FXML
+    private Label error_label;
 
     @FXML
     void initialize() {
-        assert amount_tf != null : "fx:id=\"amount_tf\" was not injected: check your FXML file 'sample.fxml'.";
-        assert calculate_small_tip_btn != null : "fx:id=\"calculate_small_tip_btn\" was not injected: check your FXML file 'sample.fxml'.";
-        assert result_small_tip_label != null : "fx:id=\"result_small_tip_label\" was not injected: check your FXML file 'sample.fxml'.";
-        assert calculate_usual_tip_btn != null : "fx:id=\"calculate_usual_tip_btn\" was not injected: check your FXML file 'sample.fxml'.";
-        assert result_usual_tip_label != null : "fx:id=\"result_usual_tip_label\" was not injected: check your FXML file 'sample.fxml'.";
-        assert calculate_big_tip_btn != null : "fx:id=\"calculate_big_tip_btn\" was not injected: check your FXML file 'sample.fxml'.";
-        assert result_big_tip_label != null : "fx:id=\"result_big_tip_label\" was not injected: check your FXML file 'sample.fxml'.";
+        calculate_small_tip_btn.setOnAction(event -> {
+            if (checkField()) {
+                result_small_tip_label.setText(String.valueOf(percent.roundedTotalAmount(sum, 5)));
+            }
+        });
 
+        calculate_usual_tip_btn.setOnAction(event -> {
+            if (checkField()) {
+                result_usual_tip_label.setText(String.valueOf(percent.roundedTotalAmount(sum, 9)));
+            }
+        });
+
+        calculate_big_tip_btn.setOnAction(event -> {
+            if (checkField()) {
+                result_big_tip_label.setText(String.valueOf(percent.roundedTotalAmount(sum, 15)));
+            }
+        });
+    }
+
+    private boolean checkField() {
+        try {
+            if (!amount_tf.getText().equals("")) {
+                sum = Double.valueOf(amount_tf.getText());
+            } else {
+                error_label.setText("Введите сумму");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            error_label.setText("Неверный формат ввода");
+            return false;
+        }
+
+        error_label.setText("");
+        return true;
     }
 }
